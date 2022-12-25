@@ -6,12 +6,24 @@ using UnityEngine.EventSystems;
 
 public class DecreaceButtonR : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private ElementColoroing _elementColoroing;
     private IEnumerator _coloring;
+    private IElementColoring _activeElement;
+    private Dictionary<string, int> _redChannelDictionary = new();
+
+    private void OnEnable()
+    {
+        EventSet.ElementSelected += SetActiveElement;
+    }
+
+    private void SetActiveElement(IElementColoring activeElement)
+    {
+        _activeElement = activeElement;
+    }
 
     private void Start()
     {
-        _coloring = DecreaceR();
+        _redChannelDictionary.Add("r", _activeElement.ReturnColor().r);
+        _coloring = IncreaseR();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -24,17 +36,22 @@ public class DecreaceButtonR : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         StopCoroutine(_coloring);
     }
 
-    public IEnumerator DecreaceR()
+    public IEnumerator IncreaseR()
     {
         while (true)
         {
-            if (_elementColoroing.RedChannel > 0)
+            if (_activeElement.ReturnColor().r > 0)
             {
-                _elementColoroing.RedChannel--;
-                if (_elementColoroing.GetActiveElement.TryGetComponent(out IElement element))
-                    element.ChangeChannels();
+                _redChannelDictionary["r"] = _activeElement.ReturnColor().r;
+                _redChannelDictionary["r"] = _redChannelDictionary["r"] - 1;
+                _activeElement.ChangeColor(_redChannelDictionary);
             }
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    private void OnDisable()
+    {
+        EventSet.ElementSelected -= SetActiveElement;
     }
 }

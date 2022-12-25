@@ -2,26 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VolometricElement : MonoBehaviour, IElement
+public class VolometricElement : MonoBehaviour, IElementColoring
 {
-    [SerializeField] private ElementColoroing _elementColoroing;
-
-
-    public void ChangeChannels()
+    public void ChangeColor(Dictionary<string, int> channelValue)
     {
-        if (TryGetComponent(out MeshRenderer meshRender))
-            _elementColoroing.GetActiveElement.GetComponent<MeshRenderer>().material.color = new Color32((byte)_elementColoroing.RedChannel, (byte)_elementColoroing.GreenChanel, (byte)_elementColoroing.BlueChannel, 255);
+        string key = "";
 
-        EventSet.colorChanged.Invoke(new Color(_elementColoroing.RedChannel, _elementColoroing.BlueChannel, _elementColoroing.GreenChanel));
+        foreach (var channelKey in channelValue.Keys)
+        {
+            key = channelKey;
+        }
+
+        switch (key)
+        {
+            case "r":
+                GetComponent<MeshRenderer>().material.color = new Color32((byte)channelValue[key], ReturnColor().g, ReturnColor().b, 255);
+                break;
+            case "g":
+                GetComponent<MeshRenderer>().material.color = new Color32(ReturnColor().r, (byte)channelValue[key], ReturnColor().b, 255);
+                break;
+            case "b":
+                GetComponent<MeshRenderer>().material.color = new Color32(ReturnColor().r, ReturnColor().g, (byte)channelValue[key], 255);
+                break;
+            default:
+                break;
+        }
+
+        EventSet.colorChanged.Invoke(ReturnColor());
     }
 
-    public void SelectElementChannels()
+    public Color32 ReturnColor()
     {
-        Color32 color = _elementColoroing.GetActiveElement.GetComponent<MeshRenderer>().material.color;
-        _elementColoroing.RedChannel = (int)color.r;
-        _elementColoroing.GreenChanel = (int)color.g;
-        _elementColoroing.BlueChannel = (int)color.b;
-
-        EventSet.colorChanged.Invoke(new Color(_elementColoroing.RedChannel, _elementColoroing.BlueChannel, _elementColoroing.GreenChanel));
+        return GetComponent<MeshRenderer>().material.color;
     }
 }

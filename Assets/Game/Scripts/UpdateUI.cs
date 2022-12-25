@@ -14,7 +14,7 @@ public class UpdateUI : MonoBehaviour
         EventSet.colorChanged += ChangeUI;
     }
 
-    private void ChangeUI(Color channelValue)
+    private void ChangeUI(Color32 channelValue)
     {
         _redChannelValue.text = channelValue.r.ToString();
         _greenChannelValue.text = channelValue.g.ToString();

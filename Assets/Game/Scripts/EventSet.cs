@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class EventSet : MonoBehaviour
 {
-    public static Action<GameObject> elementSelected;
-    public static Action<Color> colorChanged;
+    private static Action<IElementColoring> elementSelected;
+    public static Action<Color32> colorChanged;
+
+    internal static Action<IElementColoring> ElementSelected { get => elementSelected; set => elementSelected = value; }
 }
