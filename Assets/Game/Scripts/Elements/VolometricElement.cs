@@ -15,7 +15,7 @@ public class VolometricElement : MonoBehaviour, IElementColoring
 
         switch (key)
         {
-            case "r":z
+            case "r":
                 GetComponent<MeshRenderer>().material.color = new Color32((byte)channelValue[key], ReturnColor().g, ReturnColor().b, 255);
                 break;
             case "g":
